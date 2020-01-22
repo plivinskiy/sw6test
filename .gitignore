@@ -11,7 +11,7 @@
 /config/packages/local.yaml
 /config/packages/local.yml
 
-/custom/*
+#/custom/*
 
 /build/*
 !/build/artifacts/.gitkeep
@@ -36,13 +36,13 @@
 
 /files/*
 /.docker-sync/
-/dev-ops/docker/_volumes/*
-/dev-ops/analyze/node_modules
-/dev-ops/analyze/vendor
-/dev-ops/analyze/vendor-bin/**/vendor
-/dev-ops/analyze/.jscpd
-/dev-ops/analyze/tmp
-!/dev-ops/analyze/tmp/**/.gitkeep
+#/dev-ops/docker/_volumes/*
+#/dev-ops/analyze/node_modules
+#/dev-ops/analyze/vendor
+#/dev-ops/analyze/vendor-bin/**/vendor
+#/dev-ops/analyze/.jscpd
+#/dev-ops/analyze/tmp
+#!/dev-ops/analyze/tmp/**/.gitkeep
 
 /selenium-debug.log
 chromedriver.log

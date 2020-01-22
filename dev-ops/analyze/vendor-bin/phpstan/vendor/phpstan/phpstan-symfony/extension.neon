@@ -1,0 +1,118 @@
+parameters:
+	symfony:
+		container_xml_path: null
+		constant_hassers: true
+		console_application_loader: null
+	stubFiles:
+		- stubs/FormBuilderInterface.stub
+		- stubs/FormInterface.stub
+		- stubs/HeaderBag.stub
+		- stubs/Session.stub
+
+parametersSchema:
+	symfony: structure([
+		container_xml_path: schema(string(), nullable())
+		constant_hassers: bool()
+		console_application_loader: schema(string(), nullable())
+	])
+
+services:
+	# console resolver
+	-
+		factory: PHPStan\Symfony\ConsoleApplicationResolver
+		arguments: [%symfony.console_application_loader%]
+
+	# service map
+	symfony.serviceMapFactory:
+		class: PHPStan\Symfony\ServiceMapFactory
+		factory: PHPStan\Symfony\XmlServiceMapFactory(%symfony.container_xml_path%)
+	-
+		factory: @symfony.serviceMapFactory::create()
+
+	# ControllerTrait::get()/has() return type
+	-
+		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface, %symfony.constant_hassers%)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+	-
+		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Psr\Container\ContainerInterface, %symfony.constant_hassers%)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+	-
+		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller, %symfony.constant_hassers%)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+	-
+		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController, %symfony.constant_hassers%)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# ControllerTrait::has() type specification
+	-
+		factory: PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension(Symfony\Component\DependencyInjection\ContainerInterface)
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+	-
+		factory: PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension(Psr\Container\ContainerInterface)
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+	-
+		factory: PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller)
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+	-
+		factory: PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController)
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+
+	# Request::getContent() return type
+	-
+		factory: PHPStan\Type\Symfony\RequestDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# Request::getSession() type specification
+	-
+		factory: PHPStan\Type\Symfony\RequestTypeSpecifyingExtension
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+
+	# HeaderBag::get() return type
+	-
+		factory: PHPStan\Type\Symfony\HeaderBagDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# SerializerInterface::deserialize() return type
+	-
+		factory: PHPStan\Type\Symfony\SerializerDynamicReturnTypeExtension(Symfony\Component\Serializer\SerializerInterface, deserialize)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# DenormalizerInterface::denormalize() return type
+	-
+		factory: PHPStan\Type\Symfony\SerializerDynamicReturnTypeExtension(Symfony\Component\Serializer\Normalizer\DenormalizerInterface, denormalize)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# Envelope::all() return type
+	-
+		factory: PHPStan\Type\Symfony\EnvelopeReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# InputInterface::getArgument() return type
+	-
+		factory: PHPStan\Type\Symfony\InputInterfaceGetArgumentDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# InputInterface::hasArgument() type specification
+	-
+		factory: PHPStan\Type\Symfony\ArgumentTypeSpecifyingExtension
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+
+	# InputInterface::hasArgument() return type
+	-
+		factory: PHPStan\Type\Symfony\InputInterfaceHasArgumentDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# InputInterface::getOption() return type
+	-
+		factory: PHPStan\Type\Symfony\InputInterfaceGetOptionDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# InputInterface::hasOption() type specification
+	-
+		factory: PHPStan\Type\Symfony\OptionTypeSpecifyingExtension
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+
+	# InputInterface::hasOption() return type
+	-
+		factory: PHPStan\Type\Symfony\InputInterfaceHasOptionDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
