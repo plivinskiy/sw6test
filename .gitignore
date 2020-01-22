@@ -6,10 +6,10 @@
 /.php_cs.cache
 /docker-compose.override.yml
 
-/config/jwt/*
+#/config/jwt/*
 !/config/jwt/.gitkeep
-/config/packages/local.yaml
-/config/packages/local.yml
+#/config/packages/local.yaml
+#/config/packages/local.yml
 
 #/custom/*
 
