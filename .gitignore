@@ -1,4 +1,4 @@
-/vendor/
+#/vendor/
 /bin/vendor/
 
 /.idea/
@@ -52,7 +52,7 @@ chromedriver.log
 .env
 /public/bundles/
 /var/
-/vendor/
+#/vendor/
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
