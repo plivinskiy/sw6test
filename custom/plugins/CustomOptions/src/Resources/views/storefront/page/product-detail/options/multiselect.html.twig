@@ -1,0 +1,7 @@
+
+<label class="form-label">{{ option.title }}</label>
+<select name="options[{{ option.id }}][value][]" data-option-id="{{ option.id }}" class="form-control {% if option.isRequire %}required{% endif %}" {% if option.isRequire %}required="required"{% endif %} multiple="multiple">
+    {% for value in option.values %}
+    <option value="{{ value.id }}" data-type="{{ value.type }}" data-price="{{ value.price }}">{{ value.title }} + {{ value.price|currency }} </option>
+    {% endfor %}
+</select>

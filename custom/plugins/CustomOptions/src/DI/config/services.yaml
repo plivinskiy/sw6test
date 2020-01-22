@@ -1,0 +1,29 @@
+services:
+
+    swpa.custom.options.config:
+        class: Swpa\CustomOptions\Service\Config
+        public: false
+        arguments:
+            - '@Shopware\Core\System\SystemConfig\SystemConfigService'
+
+    swpa.custom.options.cart.checkout.price.collector:
+        class: Swpa\CustomOptions\Service\Cart\Checkout\OptionPriceCollector
+        public: false
+        arguments:
+            - '@product_custom_option.repository'
+            - '@Shopware\Core\Checkout\Cart\Price\QuantityPriceCalculator'
+        tags:
+            - { name: 'shopware.cart.processor', priority: 5000 }
+            - { name: 'shopware.cart.collector', priority: 5000 }
+
+
+    swpa.custom.options.cart.checkout.line.item.collector:
+        class: Swpa\CustomOptions\Service\Cart\Checkout\LineItem\OptionCollector
+        public: false
+        arguments:
+            - '@product_custom_option.repository'
+
+
+    swpa.custom.options.option.price.calculator:
+        class: Swpa\CustomOptions\Service\Option\ValuePriceCalculator
+        public: false

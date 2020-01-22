@@ -1,0 +1,16 @@
+{% block sw_order_line_items_grid_grid_columns_label_content %}
+    {% parent %}
+    <template>
+        <div class="sw-product-custom-options-grid">
+            <div v-for="lineItem in orderLineItems">
+                <div v-if="item.id === lineItem.id && lineItem.payload.custom_options ">
+                    <div v-for="valueId in lineItem.payload.backendCustomOptions">
+                        <div>
+                            <b>{{ valueId }}</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+{% endblock %}

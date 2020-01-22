@@ -1,0 +1,73 @@
+{
+  "swpa-options": {
+    "general": {
+        "buttonAddOption": "Add new option",
+        "optionsNotExisting": "No options available for this product yet",
+        "defaultOptionTitle": "The new Option"
+    },
+    "form": {
+        "no": "No",
+        "yes": "Yes",
+        "isRequired": "Required",
+        "type": "-- Please Select Type --",
+        "title": "Title",
+        "onDeleteOption": "Delete Option",
+        "onDependence": "Dependence",
+        "onDuplicate": "Duplicate",
+        "sortOrder": "Sort Order",
+        "onAddNewValue": "Add Value",
+        "delete": "Delete",
+        "dependence": "Dependence",
+        "modal": {
+            "option": {
+
+                "deleteConfirmTitle": "Delete the option",
+                "deleteValueConfirmTitle": "Delete the value",
+                "deleteConfirmText": "Are you sure you want to delete the option?",
+                "deleteValueConfirmText": "Are you sure you want to delete the value?",
+                "deleteButtonCancel": "Cancel",
+                "deleteButtonDelete": "Delete"
+            },
+            "value": {
+                "deleteConfirmTitle": "Delete the value",
+                "deleteConfirmText": "Are you sure you want to delete the value?",
+                "deleteButtonCancel": "Cancel",
+                "deleteButtonDelete": "Delete"
+            }
+        }
+    },
+    "column": {
+        "title": "Title",
+        "color": "Color",
+        "price": "Price",
+        "price_art": "Price Art",
+        "article_number": "Article Number",
+        "sort_order": "Sort Order"
+    },
+    "fieldType" : {
+        "group" : {
+            "select" : "Select",
+            "text" : "Text"
+        },
+        "select": {
+            "select": "Dropdown",
+            "radio": "Radio",
+            "checkbox": "Checkbox",
+            "multiselect": "Multiselect",
+            "color": "Color"
+        },
+        "text" : {
+            "field": "Field"
+        }
+    },
+    "dependence": {
+        "modal": {
+            "close": "Close",
+            "save": "Save dependence"
+        },
+        "column": {
+            "is_available": "Is available?"
+        }
+    }
+  }
+}

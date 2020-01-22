@@ -1,0 +1,7 @@
+services:
+
+    Swpa\CustomOptions\Controller\OptionsController:
+        public: true
+        arguments:
+            - '@product_custom_option.repository'
+            - '@product.repository'

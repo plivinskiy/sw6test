@@ -1,0 +1,15 @@
+.sw-product-detail-context-custom-options {
+    .sw-promotion-discount-component__context-button {
+        float: right;
+        margin: 0 0 15px 10px;
+    }
+    .sw-product-custom-options__switches {
+        .sw-field--switch {
+            margin: 4px 0 0 0;
+            .sw-field--switch__content {
+                background: none;
+                grid-column-gap: 0px;
+            }
+        }
+    }
+}

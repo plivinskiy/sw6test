@@ -1,0 +1,5 @@
+{% for value in option.values %}
+    <label class="form-label">{{ option.title }} + {{ value.price|currency }}</label>
+    <input type="text" data-option-id="{{ value.id }}" placeholder="maximal 20" name="options[{{ option.id }}][text][]" data-type="{{ value.type }}" data-price="{{ value.price }}" class="form-control" />
+    <input type="hidden" name="options[{{ option.id }}][value][]"  value="{{ value.id }}" />
+{% endfor %}

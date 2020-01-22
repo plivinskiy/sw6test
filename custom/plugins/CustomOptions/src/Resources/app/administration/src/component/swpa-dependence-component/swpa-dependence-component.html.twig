@@ -1,0 +1,50 @@
+<sw-modal v-if="visible"
+          :title="title"
+          variant="full"
+          @modal-close="onCloseModal"
+          class="sw-promotion-discount-form__advanced-prices-modal">
+        <sw-container class="sw-product-detail-context-prices sw-product-detail-context-custom-options">
+            <div class="sw-product-detail-context-prices__toolbar">
+            <sw-card v-if="isOptionAvailable(option)"
+                     :title="option.title"
+                     v-for="(option, key, index) in options"
+                     :key="option.id"
+                     class="context-price"
+                     :large="true" >
+
+                    <sw-data-grid v-if="hasValues(option)"
+                                  :dataSource="option.values"
+                                  :columns="columns"
+                                  :showActions="false"
+                                  :showSelection="false"
+                                  :compactMode="true" >
+
+                        <template slot="column-title" slot-scope="{ item, itemIndex, compact }">
+                            <div>{{ item.title }}</div>
+                        </template>
+
+                        <template slot="column-isAvailable" slot-scope="{ item, itemIndex, compact }">
+                                <sw-select-field
+                                          v-model="item.dependent"
+                                          :value="item.dependent"
+                                          :name="`dependence[${item.id}]`"
+                                          :disabled="checkItemAvailability(option,item)"
+                                          @change="onChangeDependence(item)"
+                                          :size="compact ? 'small' : 'default'" >
+                                    <option value="0" >not selected</option>
+                                    <option value="1" >available</option>
+                                    <option value="2" >not available</option>
+                                </sw-select-field>
+                        </template>
+
+                    </sw-data-grid>
+
+            </sw-card>
+            </div>
+        </sw-container>
+        <template slot="modal-footer">
+            <sw-button variant="primary" size="small" @click="onSave" >
+                {{ $tc('swpa-options.dependence.modal.save') }}
+            </sw-button>
+        </template>
+</sw-modal>

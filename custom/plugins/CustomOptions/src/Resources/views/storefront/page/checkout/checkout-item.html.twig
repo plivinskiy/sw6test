@@ -1,0 +1,20 @@
+{% sw_extends '@Storefront/storefront/page/checkout/checkout-item.html.twig' %}
+
+{% block page_checkout_item_info_variants %}
+
+    {{ parent() }}
+
+    {% for item in lineItem.extensions.options.getCollection() %}
+        {% if item.extensions.value %}
+        <div class="cart-item-variants-properties">
+            <div class="cart-item-variants-properties-name">{{ item.extensions.option.title }}:</div>
+            <div class="cart-item-variants-properties-value">
+                {% for value in item.extensions.value.getCollection() %}
+                    {{ value.title }}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,17 @@
+services:
+
+    Swpa\CustomOptions\DAL\Option\OptionEntityDefinition:
+        tags:
+            - { name: 'shopware.entity.definition', entity: 'product_custom_option' }
+
+    Swpa\CustomOptions\DAL\Option\Aggregate\OptionTranslation\OptionTranslationDefinition:
+        tags:
+            - { name: 'shopware.entity.definition', entity: 'product_custom_option_translation' }
+
+    Swpa\CustomOptions\DAL\OptionValue\OptionValueEntityDefinition:
+        tags:
+            - { name: 'shopware.entity.definition', entity: 'product_custom_option_type_value' }
+
+    Swpa\CustomOptions\DAL\OptionValue\Aggregate\OptionValueTranslation\OptionValueTranslationDefinition:
+        tags:
+            - { name: 'shopware.entity.definition', entity: 'product_custom_option_type_value_translation' }

@@ -1,0 +1,14 @@
+{% sw_extends '@Storefront/storefront/page/product-detail/buy-widget-price.html.twig' %}
+
+{% block page_product_detail_price_block_table_body_cell_price %}
+    <td class="product-block-prices-cell">
+        <span data-price-update="true" data-original="{{ price.unitPrice }}" data-original-currency="{{ context.currency.translated.shortName }}">{{ price.unitPrice|currency }}</span>{{ "general.star"|trans|sw_sanitize }}
+    </td>
+{% endblock %}
+
+
+{% block page_product_detail_price_content %}
+    <p class="product-detail-price" >
+        <span data-price-update="true" data-original="{{ price.unitPrice }}" data-original-currency="{{ context.currency.translated.shortName }}">{{ price.unitPrice|currency }}</span>{{ "general.star"|trans|sw_sanitize }}
+    </p>
+{% endblock %}

@@ -1,0 +1,253 @@
+{% block swpa_product_detail_custom %}
+<sw-container class="sw-product-detail-context-prices sw-product-detail-context-custom-options">
+
+    <sw-container justify="center" columns="250x">
+            <sw-button v-if="canAddNewOption"
+                       @click="onAddNewOption(null)"
+                       class="sw-product-detail-context-prices__add-new-rule"
+                       variant="ghost" size="small">
+                {{ $tc('swpa-options.general.buttonAddOption') }}
+            </sw-button>
+    </sw-container>
+
+    {% block swpa_product_detail_custom_empty_state %}
+        <sw-card class="context-prices__empty-state"
+                 v-if="isLoading"
+                 :large="true">
+            <sw-loader></sw-loader>
+        </sw-card>
+    {% endblock %}
+
+
+    {% block swpa_product_detail_custom_options_options_grid %}
+    <sw-container v-else-if="productAvailable">
+        <sw-card :title="option.title ? option.title : $tc('swpa-options.general.defaultOptionTitle')"
+                                 v-for="(option, key, index) in options"
+                                 :key="option.id"
+                                 class="context-price"
+                                 :class="getOptionClass(index)"
+                                 :isLoading="isLoading"
+                                 :large="true">
+
+            <sw-context-button class="sw-promotion-discount-component__context-button">
+               {% block swpa_product_detail_custom_options_option_context_menu %}
+                   <sw-context-menu-item variant="danger"
+                                         class="sw-promotion-context-item__delete-action"
+                                         @click="onShowDeleteOptionModal(option)" >
+                       {{ $tc('swpa-options.form.onDeleteOption') }}
+                   </sw-context-menu-item>
+                   <sw-context-menu-item variant="success"
+                                         class="sw-promotion-context-item__duplicate-action"
+                                         @click="onDuplicate(option)" >
+                       {{ $tc('swpa-options.form.onDuplicate') }}
+                   </sw-context-menu-item>
+               {% endblock %}
+           </sw-context-button>
+
+            <div class="sw-product-detail-context-prices__toolbar">
+                <sw-container columns="3fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr" gap="0 10px" >
+
+                    <sw-field type="text"
+                              v-model="option.title"
+                              :value="option.title"
+                              :name="`option-title-${option.id}`"
+                              :placeholder="$tc('swpa-options.form.title')"
+                              size="small"
+                              @change="onOptionTitleChange(option)" >
+                    </sw-field>
+
+                    <sw-select-field v-model="option.type"
+                                     :placeholder="$tc('swpa-options.form.type')"
+                                     :value="option.type"
+                                     size="small"
+                                     :name="`option-type-${option.id}`"
+                                     @change="onOptionTypeChange(option)" >
+                        <optgroup v-for="type in fieldTypes" :label="type.title">
+                            <option v-for="selectOption in type.options" :value="selectOption.type" >{{ selectOption.title }}</option>
+                        </optgroup>
+                    </sw-select-field>
+
+                    <div class="sw-product-custom-options__switches">
+                        <sw-field type="switch"
+                                  :label="$tc('swpa-options.form.isRequired')"
+                                  :name="`option-is-require-${option.id}`"
+                                  v-model="option.isRequire"
+                                  @change="onOptionIsRequiredChange(option)">
+                        </sw-field>
+                    </div>
+
+                    <sw-field type="number"
+                              v-model="option.sortOrder"
+                              :value="option.sortOrder"
+                              size="small"
+                              :name="`option-order-${option.id}`"
+                              :placeholder="$tc('swpa-options.form.sortOrder')"
+                              @change="onOptionSortOrderChange(option)" >
+
+                    </sw-field>
+
+                    <div class="sw-product-custom-options__switches">
+                        <sw-field type="switch"
+                                  :label="$tc('sw-product.crossselling.inputCrossSellingActive')"
+                                  v-model="option.active"
+                                  :disabled="canNotBeActivate(option)"
+                                  :name="`option-active-${option.id}`"
+                                  @change="onOptionChangeStatus(option)">
+                        </sw-field>
+                    </div>
+
+                    <sw-button v-if="canAddNewValue(option)" @click="onAddNewValue(option)" size="small" :disabled="!option.type">
+                        {{ $tc('swpa-options.form.onAddNewValue') }}
+                    </sw-button>
+                </sw-container>
+            </div>
+
+            {% block swpa_product_detail_custom_options_values_grid %}
+            <sw-data-grid v-if="valuesAvailable(option)"
+                          :dataSource="option.values"
+                          :columns="valueColumns"
+                          showSettings
+                          :showSelection="false"
+                          :compactMode="true" >
+
+                <template slot="column-title" slot-scope="{ item, itemIndex, compact }">
+                        <sw-field type="text"
+                                  v-model="item.title"
+                                  @change="onChangeValue(item)"
+                                  :name="`value-title-${item.id}`"
+                                  validation="required"
+                                  :size="compact ? 'small' : 'default'" >
+                        </sw-field>
+                </template>
+
+                <template slot="column-color" v-if="isColorFieldAvailable(option)" slot-scope="{ item, itemIndex, compact }">
+                    <sw-colorpicker v-model="item.color"
+                                    colorOutput="auto"
+                                    :disabled="false"
+                                    :alpha="true"
+{#                                    zIndex="1000"#}
+                                    placeholder="Color">
+                    </sw-colorpicker>
+                </template>
+
+                <template slot="column-price" slot-scope="{ item, itemIndex, compact }">
+                        <sw-field type="number"
+                                  v-model="item.price"
+                                  @change="onChangeValue(item)"
+                                  :name="`value-price-${item.id}`"
+                                  validation="required"
+                                  :size="compact ? 'small' : 'default'" >
+                        </sw-field>
+                </template>
+
+                <template slot="column-sku" slot-scope="{ item, itemIndex, compact }">
+                        <sw-field type="text"
+                                  v-model="item.sku"
+                                  :name="`value-sku-${item.id}`"
+                                  @change="onChangeValue(item)"
+                                  :size="compact ? 'small' : 'default'" >
+                        </sw-field>
+                </template>
+
+                <template slot="column-sort_order" slot-scope="{ item, itemIndex, compact }">
+                        <sw-field type="number"
+                                  v-model="item.sortOrder"
+                                  @change="onChangeValue(item)"
+                                  :name="`value-sort-${item.id}`"
+                                  :size="compact ? 'small' : 'default'" >
+                        </sw-field>
+                </template>
+                <template slot="column-type" slot-scope="{ item, itemIndex, compact }">
+                        <sw-select-field
+                                  v-model="item.type"
+                                  :value="item.type"
+                                  :name="`value-type-${item.id}`"
+                                  @change="onChangeValue(item)"
+                                  :size="compact ? 'small' : 'default'" >
+                            <option value="fixed" >fixed</option>
+                            <option value="percent" >percent</option>
+                        </sw-select-field>
+                </template>
+                <template slot="actions" slot-scope="{ item }">
+                    <sw-context-menu-item variant="danger"
+                                          class="product-detail-context-prices__context-delete"
+                                          @click="onShowDeleteValueModal(option,item)">
+                        {{ $tc('swpa-options.form.delete') }}
+                    </sw-context-menu-item>
+                    <sw-context-menu-item variant="success"
+                                          class="product-detail-context-prices__context-delete"
+                                          @click="onDependence(option,item)">
+                        {{ $tc('swpa-options.form.dependence') }}
+                    </sw-context-menu-item>
+
+                    {% block swpa_product_detail_custom_options_dependence_form %}
+                        <swpa-dependence-component
+                            :key="item.id"
+                            :option="option"
+                            :displayWindow="item.dependence"
+                            :closeComponent="closeComponentValue"
+                            :productId="product.id"
+                            :value="item"
+                        >
+                        </swpa-dependence-component>
+                    {% endblock %}
+
+                </template>
+            </sw-data-grid>
+            {% endblock %}
+        </sw-card>
+    </sw-container>
+    {% endblock %}
+
+    <sw-card v-else>
+        <p>{{ $tc('swpa-options.general.optionsNotExisting') }}</p>
+    </sw-card>
+
+    {% block swpa_product_detail_custom_options_delete_option_modal %}
+    <sw-modal v-if="showDeleteOptionModal"
+              @modal-close="onCloseDeleteOptionModal"
+              variant="small"
+              :title="$tc('swpa-options.form.modal.option.deleteConfirmTitle')"
+              class="sw-product-detail-cross-selling__delete-modal">
+            <p>
+                {{ $tc('swpa-options.form.modal.option.deleteConfirmText') }}
+            </p>
+            <template #modal-footer>
+                    <sw-button @click="onCloseDeleteOptionModal" size="small">
+                        {{ $tc('swpa-options.form.modal.option.deleteButtonCancel') }}
+                    </sw-button>
+                    <sw-button
+                        class="sw-product-detail-cross-selling__delete-button"
+                        size="small"
+                        variant="danger"
+                        @click="onDeleteOption(showDeleteOptionModal.id)">
+                        {{ $tc('swpa-options.form.modal.option.deleteButtonDelete') }}
+                    </sw-button>
+            </template>
+    </sw-modal>
+    {% endblock %}
+    {% block swpa_product_detail_custom_options_delete_value_modal %}
+    <sw-modal v-if="showDeleteValueModal"
+              @modal-close="onCloseDeleteValueModal"
+              variant="small"
+              :title="$tc('swpa-options.form.modal.option.deleteValueConfirmTitle')"
+              class="sw-product-detail-cross-selling__delete-modal">
+            <p>
+                {{ $tc('swpa-options.form.modal.option.deleteValueConfirmText') }}
+            </p>
+            <template #modal-footer>
+                    <sw-button @click="onCloseDeleteValueModal" size="small">
+                        {{ $tc('swpa-options.form.modal.option.deleteButtonCancel') }}
+                    </sw-button>
+                    <sw-button
+                        class="sw-product-detail-cross-selling__delete-button"
+                        size="small"
+                        variant="danger"
+                        @click="onValueDelete(showDeleteValueOptionModal,showDeleteValueModal)">
+                        {{ $tc('swpa-options.form.modal.option.deleteButtonDelete') }}
+                    </sw-button>
+            </template>
+    </sw-modal>
+    {% endblock %}
+</sw-container>
+{% endblock %}

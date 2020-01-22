@@ -1,0 +1,38 @@
+services:
+
+    swpa.subscriber.page.detail.page:
+        class:  Swpa\CustomOptions\Subscriber\Page\DetailPageSubscriber
+        arguments:
+            - '@product_custom_option.repository'
+            - '@swpa.custom.options.cart.checkout.line.item.collector'
+            - '@swpa.custom.options.option.price.calculator'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    swpa.subscriber.checkout.order.converter:
+        class:  Swpa\CustomOptions\Subscriber\Checkout\OrderConverterSubscriber
+        tags:
+            - { name: 'kernel.event_subscriber' }
+        arguments:
+            - '@product_custom_option.repository'
+
+    swpa.subscriber.checkout.finish:
+        class:  Swpa\CustomOptions\Subscriber\Checkout\FinishPageSubscriber
+        arguments:
+            - '@swpa.custom.options.cart.checkout.line.item.collector'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    swpa.subscriber.checkout.confirm:
+        class:  Swpa\CustomOptions\Subscriber\Checkout\ConfirmPageSubscriber
+        arguments:
+            - '@swpa.custom.options.cart.checkout.line.item.collector'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    swpa.subscriber.checkout.cart:
+        class:  Swpa\CustomOptions\Subscriber\Checkout\CartPageSubscriber
+        arguments:
+            - '@swpa.custom.options.cart.checkout.line.item.collector'
+        tags:
+            - { name: 'kernel.event_subscriber' }

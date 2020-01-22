@@ -1,0 +1,30 @@
+{
+    "name": "swpa/customoptions",
+    "description": "Custom Options of Product for Shopware 6",
+    "version": "1.0.0",
+    "type": "shopware-platform-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "P. Livinskiy"
+        }
+    ],
+    "extra": {
+        "shopware-plugin-class": "Swpa\\CustomOptions\\CustomOptions",
+        "copyright": "(c) P. Livinskiy",
+        "label": {
+            "de-DE": "Custom Options of Product for Shopware 6",
+            "en-GB": "Custom Options of Product for Shopware 6"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Swpa\\CustomOptions\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Swpa\\CustomOptions\\Test\\": "tests/"
+        }
+    }
+}

@@ -1,0 +1,13 @@
+{% sw_extends '@Storefront/storefront/page/product-detail/buy-widget-form.html.twig' %}
+
+{% block page_product_detail_buy_container %}
+
+    <div class="custom-options-container">
+        {% for option in page.extensions.customOptions.getElements() %}
+            {% set optionTemplatePath = '@Storefront/storefront/page/product-detail/options/' ~ option.type ~ '.html.twig' %}
+        <div class="form-group">{% sw_include optionTemplatePath with { 'option':option } %}</div>
+        {% endfor %}
+    </div>
+
+    {{ parent() }}
+{% endblock %}

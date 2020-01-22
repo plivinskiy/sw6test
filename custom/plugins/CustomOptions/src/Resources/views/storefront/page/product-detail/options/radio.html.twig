@@ -1,0 +1,5 @@
+
+<label class="form-label">{{ option.title }}</label>
+{% for value in option.values %}
+<input type="radio" name="options[{{ option.id }}][value][{{ option.id }}]" data-option-id="{{ value.id }}" data-type="{{ value.type }}" data-price="{{ value.price }}" value="{{ value.id }}">{{ value.title }} + {{ value.price|currency }} </input>
+{% endfor %}

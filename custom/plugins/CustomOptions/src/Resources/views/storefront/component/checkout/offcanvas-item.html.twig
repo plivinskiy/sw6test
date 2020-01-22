@@ -1,0 +1,21 @@
+{% sw_extends '@Storefront/storefront/component/checkout/offcanvas-item.html.twig' %}
+
+
+{% block component_offcanvas_product_label %}
+    {{ parent() }}
+    <div class="cart-item-variants">
+        {% for item in lineItem.extensions.options.getCollection() %}
+            {% if item.extensions.value %}
+            <div class="cart-item-variants-properties">
+                <div class="cart-item-variants-properties-name">{{ item.extensions.option.title }}:</div>
+                <div class="cart-item-variants-properties-value">
+                    {% for value in item.extensions.value.getCollection() %}
+                        {{ value.title }}
+{#                        TODO comaseparate #}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
